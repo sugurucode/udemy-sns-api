@@ -10,8 +10,8 @@ const cors = require('cors');
 //envファイルから変数を読み込める
 require('dotenv').config();
 
-//const PORT = process.env.PORT || 10000;
 const PORT = process.env.PORT || 5000;
+//const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 // expressでjsonを使用するため

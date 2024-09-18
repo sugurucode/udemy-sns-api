@@ -62,10 +62,10 @@ router.put('/profile/:userId', isAuthenticated, async (req, res) => {
     const updatedProfile = await prisma.profile.update({
       where: { userId: parseInt(userId) },
       data: {
-        bio: bio || undefined, // bioが提供されない場合は変更しない
+        bio: bio || undefined, //入力しない場合
         user: {
           update: {
-            username: username || undefined, // usernameが提供されない場合は変更しない
+            username: username || undefined, // 入力しない場合
           },
         },
       },
