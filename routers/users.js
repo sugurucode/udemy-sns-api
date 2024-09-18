@@ -46,4 +46,36 @@ router.get('/profile/:userId', async (req, res) => {
   }
 });
 
+router.put('/profile/:userId', isAuthenticated, async (req, res) => {
+  const { userId } = req.params;
+  const { username, bio } = req.body;
+
+  try {
+    // ユーザーが存在するかを確認
+    const user = await prisma.user.findUnique({ where: { id: parseInt(userId) } });
+
+    if (!user) {
+      return res.status(404).json({ message: 'ユーザーが見つかりませんでした。' });
+    }
+
+    // プロフィールを更新
+    const updatedProfile = await prisma.profile.update({
+      where: { userId: parseInt(userId) },
+      data: {
+        bio: bio || undefined, // bioが提供されない場合は変更しない
+        user: {
+          update: {
+            username: username || undefined, // usernameが提供されない場合は変更しない
+          },
+        },
+      },
+    });
+
+    res.status(200).json(updatedProfile);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
