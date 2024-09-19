@@ -70,7 +70,6 @@ router.put('/profile/:userId', isAuthenticated, async (req, res) => {
         },
       },
     });
-
     res.status(200).json(updatedProfile);
   } catch (err) {
     console.log(err);

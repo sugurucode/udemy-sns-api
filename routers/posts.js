@@ -79,5 +79,25 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
+//その投稿を削除
+router.delete('/delete/:postId', async (req, res) => {
+  // const { userId } = req.params;
+  // const { postId } = req.params;
+
+  console.log('req.params.postId' + req.params.postId);
+
+  try {
+    const deletedPost = await prisma.post.delete({
+      where: {
+        id: Number(req.params.postId),
+      },
+    });
+    return res.status(200).json(deletedPost);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'サーバーエラーです。' });
+  }
+});
+
 // server.jsで呼び出せるようになる
 module.exports = router;
