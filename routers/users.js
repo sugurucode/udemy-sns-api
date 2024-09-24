@@ -9,7 +9,7 @@ router.get('/find', isAuthenticated, async (req, res) => {
     const user = await prisma.user.findUnique({ where: { id: req.userId } });
 
     if (!user) {
-      res.status(404).json({ error: 'ユーザーがみつかりませんでした' });
+      return res.status(404).json({ error: 'ユーザーがみつかりませんでした' });
     }
 
     res.status(200).json({
@@ -74,6 +74,47 @@ router.put('/profile/:userId', isAuthenticated, async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: err.message });
+  }
+});
+
+// ユーザー情報の削除
+router.delete('/delete/:id', async (req, res) => {
+  console.log('req.params.id' + req.params.id);
+
+  // try {
+  //   const deletedPost = await prisma.user.delete({
+  //     where: {
+  //       id: Number(req.params.id),
+  //     },
+  //   });
+  //   return res.status(200).json(deletedPost);
+  // } catch (err) {
+  //   console.error(err);
+  //   res.status(500).json({ message: 'Post削除エラーです。' });
+  // }
+
+  // try {
+  //   const deletedProfile = await prisma.user.delete({
+  //     where: {
+  //       id: Number(req.params.id),
+  //     },
+  //   });
+  //   return res.status(200).json(deletedProfile);
+  // } catch (err) {
+  //   console.error(err);
+  //   res.status(500).json({ message: 'Profile削除エラーです。' });
+  // }
+
+  try {
+    const deletedUser = await prisma.user.delete({
+      where: {
+        id: Number(req.params.id),
+      },
+    });
+    return res.status(200).json(deletedUser);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'User削除エラーです。' });
   }
 });
 
